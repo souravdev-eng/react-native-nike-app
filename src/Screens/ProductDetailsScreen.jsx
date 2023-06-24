@@ -9,18 +9,24 @@ import {
 } from 'react-native';
 import products from '../data/products';
 import { FlatList } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { cartSlice } from '../store/cartSlice';
 
 const ProductDetailsScreen = () => {
-  const product = products[0];
+  // @ts-ignore
+  const product = useSelector((state) => state?.products?.selectedProduct);
   const { width } = useWindowDimensions();
+  const dispatch = useDispatch();
 
-  const addToCart = () => {};
+  const addToCart = () => {
+    dispatch(cartSlice.actions.addCartItem({ product }));
+  };
 
   return (
     <View>
       <ScrollView>
         <FlatList
-          data={product.images}
+          data={product?.images}
           renderItem={({ item }) => (
             <Image source={{ uri: item }} style={{ width, aspectRatio: 1 }} />
           )}
@@ -29,9 +35,9 @@ const ProductDetailsScreen = () => {
           pagingEnabled
         />
         <View style={{ padding: 20 }}>
-          <Text style={styles.title}>{product.name}</Text>
-          <Text style={styles.price}>${product.price}</Text>
-          <Text style={styles.description}>{product.description}</Text>
+          <Text style={styles.title}>{product?.name}</Text>
+          <Text style={styles.price}>${product?.price}</Text>
+          <Text style={styles.description}>{product?.description}</Text>
         </View>
       </ScrollView>
       <TouchableOpacity onPress={addToCart} style={styles.button} activeOpacity={0.9}>
