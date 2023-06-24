@@ -1,11 +1,10 @@
 import {
-  Image,
-  Pressable,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
   Text,
   View,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
 import products from '../data/products';
@@ -14,12 +13,12 @@ import { FlatList } from 'react-native';
 const ProductDetailsScreen = () => {
   const product = products[0];
   const { width } = useWindowDimensions();
+
   const addToCart = () => {};
 
   return (
     <View>
       <ScrollView>
-        {/* Image Carousel */}
         <FlatList
           data={product.images}
           renderItem={({ item }) => (
@@ -30,23 +29,14 @@ const ProductDetailsScreen = () => {
           pagingEnabled
         />
         <View style={{ padding: 20 }}>
-          {/* Title */}
           <Text style={styles.title}>{product.name}</Text>
-
-          {/* Price */}
           <Text style={styles.price}>${product.price}</Text>
-
-          {/* Description */}
           <Text style={styles.description}>{product.description}</Text>
         </View>
       </ScrollView>
-
-      {/* Add to cart button */}
       <TouchableOpacity onPress={addToCart} style={styles.button} activeOpacity={0.9}>
         <Text style={styles.buttonText}>Add to cart</Text>
       </TouchableOpacity>
-
-      {/* Navigation icon */}
     </View>
   );
 };
