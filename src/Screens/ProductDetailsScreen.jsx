@@ -15,11 +15,10 @@ import { cartSlice } from '../store/cartSlice';
 import { useGetProductQuery } from '../store/apiSlice';
 
 const ProductDetailsScreen = ({ route }) => {
-  const id = route?.params?.id;
-  const { data, isLoading, error } = useGetProductQuery(id);
-  const { width } = useWindowDimensions();
   const dispatch = useDispatch();
-
+  const { width } = useWindowDimensions();
+  const { id } = route?.params;
+  const { data, isLoading, error } = useGetProductQuery(id);
   const product = data?.data;
 
   const addToCart = () => {

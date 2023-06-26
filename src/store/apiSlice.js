@@ -12,7 +12,24 @@ export const apiSlice = createApi({
     getProduct: builder.query({
       query: (id) => `products/${id}`,
     }),
+
+    // Orders
+    createOrder: builder.mutation({
+      query: (newOrder) => ({
+        url: 'orders',
+        method: 'POST',
+        body: newOrder,
+      }),
+    }),
+    getOrders: builder.query({
+      query: (ref) => `orders/${ref}`,
+    }),
   }),
 });
 
-export const { useGetProductQuery, useGetProductsQuery } = apiSlice;
+export const {
+  useGetProductQuery,
+  useGetProductsQuery,
+  useCreateOrderMutation,
+  useGetOrdersQuery,
+} = apiSlice;

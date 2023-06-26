@@ -1,8 +1,18 @@
-import { useSelector } from 'react-redux';
-import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+// @ts-nocheck
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Text,
+  View,
+  Alert,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 import CartListItem from '../components/CartListItem.jsx';
-import { selectDeliveryPrice, selectSubtotal, selectTotal } from '../store/cartSlice';
+import { selectDeliveryPrice, selectSubtotal, selectTotal, cartSlice } from '../store/cartSlice';
+import { useCreateOrderMutation } from '../store/apiSlice.js';
 
 const ShoppingCartTotals = () => {
   const subtotal = useSelector(selectSubtotal);
@@ -28,8 +38,37 @@ const ShoppingCartTotals = () => {
 };
 
 const ShoppingCart = () => {
-  // @ts-ignore
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  const subtotal = useSelector(selectSubtotal);
+  const deliveryFee = useSelector(selectDeliveryPrice);
+  const total = useSelector(selectTotal);
+  const [createOrder, { data, error, isLoading }] = useCreateOrderMutation();
+
+  if (error) {
+    return <Text>Error fetching data {error?.error}</Text>;
+  }
+
+  const onCreateOrder = async () => {
+    const result = await createOrder({
+      items: cartItems,
+      subtotal,
+      deliveryFee,
+      total,
+      customer: {
+        name: 'Sourav',
+        address: 'Kolkata',
+        email: 'sourav_test@gmail.com',
+      },
+    });
+    if (result?.data?.status === 'OK') {
+      Alert.alert(
+        'Order has been submitted',
+        `Your order reference is: ${result?.data?.data?.ref}`
+      );
+      dispatch(cartSlice.actions.clear());
+    }
+  };
 
   return (
     <>
@@ -38,8 +77,8 @@ const ShoppingCart = () => {
         renderItem={({ item }) => <CartListItem cartItem={item} />}
         ListFooterComponent={ShoppingCartTotals}
       />
-      <TouchableOpacity style={styles.button} activeOpacity={0.9}>
-        <Text style={styles.buttonText}>Checkout</Text>
+      <TouchableOpacity style={styles.button} activeOpacity={0.9} onPress={onCreateOrder}>
+        <Text style={styles.buttonText}>Checkout {isLoading && <ActivityIndicator />}</Text>
       </TouchableOpacity>
     </>
   );
