@@ -1,6 +1,7 @@
-import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
-import CartListItem from '../components/CartListItem.jsx';
 import { useSelector } from 'react-redux';
+import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+
+import CartListItem from '../components/CartListItem.jsx';
 import { selectDeliveryPrice, selectSubtotal, selectTotal } from '../store/cartSlice';
 
 const ShoppingCartTotals = () => {

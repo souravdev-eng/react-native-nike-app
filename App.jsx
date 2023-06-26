@@ -8,12 +8,9 @@ import Three from './src/screens/Three';
 
 export default function App() {
   return (
-    // <Provider store={store}>
-    //   <Navigation />
-    //   <StatusBar style='auto' />
-    // </Provider>
-    <>
-      <Three />
-    </>
+    <Provider store={store}>
+      <Navigation />
+      <StatusBar style='auto' />
+    </Provider>
   );
 }

@@ -1,26 +1,38 @@
+// @ts-nocheck
 import {
   Text,
   View,
   Image,
+  FlatList,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
   useWindowDimensions,
+  ActivityIndicator,
 } from 'react-native';
-import products from '../data/products';
-import { FlatList } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { cartSlice } from '../store/cartSlice';
+import { useGetProductQuery } from '../store/apiSlice';
 
-const ProductDetailsScreen = () => {
-  // @ts-ignore
-  const product = useSelector((state) => state?.products?.selectedProduct);
+const ProductDetailsScreen = ({ route }) => {
+  const id = route?.params?.id;
+  const { data, isLoading, error } = useGetProductQuery(id);
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
+
+  const product = data?.data;
 
   const addToCart = () => {
     dispatch(cartSlice.actions.addCartItem({ product }));
   };
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Error fetching data {error.error}</Text>;
+  }
 
   return (
     <View>
