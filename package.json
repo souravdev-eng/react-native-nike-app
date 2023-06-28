@@ -13,6 +13,7 @@
     "@react-navigation/native-stack": "^6.9.13",
     "@react-three/fiber": "^8.13.3",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stripe/stripe-react-native": "0.23.3",
     "expo": "~48.0.18",
     "expo-file-system": "~15.2.2",
     "expo-gl": "~12.4.0",
